@@ -26,6 +26,23 @@ class Product extends Model
         'meal_pattern_contributions',
         'cn_statements',
         'status',
+
+        'nutri_code',
+        'manufacturer',
+        'product_number',
+        'unit_size',
+        'serving_size',
+        'case_pack',
+        'shift_life',
+        'product_specification_sheet',
+        'product_formulation_statement',
+        'buy_american_complaince',
+        'calories',
+        'protein',
+        'carbs',
+        'fat',
+        'sat_fat',
+        'trans_fat',
     ];
 
     protected $casts = [
@@ -34,7 +51,14 @@ class Product extends Model
         'cn_statements' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-    ];
+
+         'calories' => 'float',
+        'protein' => 'float',
+        'carbs' => 'float',
+        'fat' => 'float',
+        'sat_fat' => 'float',
+        'trans_fat' => 'float',
+        ];
 
     /**
      * Get the district that owns the product.

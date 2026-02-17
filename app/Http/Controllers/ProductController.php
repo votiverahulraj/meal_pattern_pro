@@ -20,15 +20,18 @@ class ProductController extends Controller
         
         if ($user->hasRole('admin')) {
             // Admin can see all products
-            $products = Product::with(['district', 'files'])->paginate(15);
-        } else {
+            $products = Product::with(['district', 'files'])
+                    ->orderBy('id', 'desc')
+                    ->paginate(15);      
+              } else {
             // District user can only see their own products
-            $products = Product::where('district_id', $user->district_id)
-                             ->with(['district', 'files'])
-                             ->paginate(15);
+             $products = Product::where('district_id', $user->district_id)
+                    ->with(['district', 'files'])
+                    ->orderBy('id', 'desc')
+                    ->paginate(15);
         }
 
-        return view('products.index', compact('products'));
+        return view('pages.products.index', compact('products'));
     }
 
     /**
@@ -36,59 +39,120 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Product::class);
+        // dd("test");
+        // $this->authorize('create', Product::class);
         
         $districts = District::all();
-        return view('products.create', compact('districts'));
+        return view('pages.products.create', compact('districts'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'brand' => 'nullable|string|max:255',
-            'category' => 'nullable|string|max:255',
-            'product_code' => 'nullable|string|max:255|unique:products,product_code',
-            'description' => 'nullable|string',
-            'ingredients' => 'nullable|string',
-            'allergens' => 'nullable|string',
-            'nutritional_info' => 'nullable|array',
-            'packaging' => 'nullable|string',
-            'storage_requirements' => 'nullable|string',
-            'preparation_instructions' => 'nullable|string',
-            'certifications' => 'nullable|string',
-            'meal_pattern_contributions' => 'nullable|array',
-            'cn_statements' => 'nullable|array',
-        ]);
+   public function store(Request $request)
+{
+        // dd( $request->all());
 
-        $user = Auth::user();
-        $districtId = $user->hasRole('admin') ? $request->district_id : $user->district_id;
+    $request->validate([
 
-        $product = Product::create([
-            'district_id' => $districtId,
-            'manufacturer_id' => $user->id,
-            'name' => $request->name,
-            'brand' => $request->brand,
-            'category' => $request->category,
-            'product_code' => $request->product_code,
-            'description' => $request->description,
-            'ingredients' => $request->ingredients,
-            'allergens' => $request->allergens,
-            'nutritional_info' => $request->nutritional_info,
-            'packaging' => $request->packaging,
-            'storage_requirements' => $request->storage_requirements,
-            'preparation_instructions' => $request->preparation_instructions,
-            'certifications' => $request->certifications,
-            'meal_pattern_contributions' => $request->meal_pattern_contributions,
-            'cn_statements' => $request->cn_statements,
-            'status' => 'active',
-        ]);
+        'name' => 'required|string|max:255',
+        'brand' => 'nullable|string|max:255',
+        'category' => 'nullable|string|max:255',
+        'product_code' => 'nullable|string|max:255|unique:products,product_code',
 
-        return redirect()->route('products.show', $product->id)->with('success', 'Product created successfully.');
-    }
+        'description' => 'nullable|string',
+        'ingredients' => 'nullable|string',
+        'allergens' => 'nullable|string',
+
+        'nutritional_info' => 'nullable|string',
+        'meal_pattern_contributions' => 'nullable|string',
+        'cn_statements' => 'nullable|string',
+
+        'packaging' => 'nullable|string',
+        'storage_requirements' => 'nullable|string',
+        'preparation_instructions' => 'nullable|string',
+        'certifications' => 'nullable|string',
+
+        // FILE VALIDATION
+       'product_specification_sheet' => 'nullable|file',
+        'product_formulation_statement' => 'nullable|file',
+        'buy_american_complaince' => 'nullable|file',
+    ]);
+
+    $user = Auth::user();
+
+    $districtId = $user->hasRole('admin')
+        ? $request->district_id
+        : $user->district_id;
+
+    // FILE UPLOAD
+    $specSheet = $request->file('product_specification_sheet')
+        ? $request->file('product_specification_sheet')->store('products/documents', 'public')
+        : null;
+
+    $formulation = $request->file('product_formulation_statement')
+        ? $request->file('product_formulation_statement')->store('products/documents', 'public')
+        : null;
+
+    $compliance = $request->file('buy_american_complaince')
+        ? $request->file('buy_american_complaince')->store('products/documents', 'public')
+        : null;
+
+
+    // SAVE PRODUCT
+     Product::create([
+
+        'district_id' => $request->district_id,
+        'manufacturer_id' => $request->manufacturer_id,
+
+        'name' => $request->name,
+        'nutri_code' => $request->nutri_code,
+        'manufacturer' => $request->manufacturer,
+        'product_number' => $request->product_number,
+
+        'unit_size' => $request->unit_size,
+        'serving_size' => $request->serving_size,
+        'case_pack' => $request->case_pack,
+        'shift_life' => $request->shift_life,
+
+        'calories' => $request->calories,
+        'protein' => $request->protein,
+        'carbs' => $request->carbs,
+        'fat' => $request->fat,
+        'sat_fat' => $request->sat_fat,
+        'trans_fat' => $request->trans_fat,
+
+        'brand' => $request->brand,
+        'category' => $request->category,
+        'product_code' => $request->product_code,
+
+        'description' => $request->description,
+        'ingredients' => $request->ingredients,
+        'allergens' => $request->allergens,
+
+        'nutritional_info' => $request->nutritional_info,
+
+        'packaging' => $request->packaging,
+        'storage_requirements' => $request->storage_requirements,
+        'preparation_instructions' => $request->preparation_instructions,
+        'certifications' => $request->certifications,
+
+        'meal_pattern_contributions' => $request->meal_pattern_contributions,
+        'cn_statements' => $request->cn_statements,
+
+        // FILE PATH
+        'product_specification_sheet' => $specSheet,
+        'product_formulation_statement' => $formulation,
+        'buy_american_complaince' => $compliance,
+
+        'status' => $request->status,
+    ]);
+
+    return redirect()
+        ->route('admin.products.index')
+        ->with('success', 'Product created successfully.');
+}
+
 
     /**
      * Display the specified resource.
@@ -98,7 +162,7 @@ class ProductController extends Controller
         $this->authorize('view', $product);
         
         $product->load(['district', 'files']);
-        return view('products.show', compact('product'));
+        return view('pages.products.show', compact('product'));
     }
 
     /**
@@ -106,10 +170,10 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $this->authorize('update', $product);
+        // $this->authorize('update', $product);
         
         $districts = District::all();
-        return view('products.edit', compact('product', 'districts'));
+        return view('pages.products.edit', compact('product', 'districts'));
     }
 
     /**
@@ -117,47 +181,157 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $this->authorize('update', $product);
-        
+        // dd( $request->all());
         $request->validate([
+
             'name' => 'required|string|max:255',
             'brand' => 'nullable|string|max:255',
             'category' => 'nullable|string|max:255',
             'product_code' => 'nullable|string|max:255|unique:products,product_code,' . $product->id,
+
             'description' => 'nullable|string',
             'ingredients' => 'nullable|string',
             'allergens' => 'nullable|string',
-            'nutritional_info' => 'nullable|array',
+
+            'nutritional_info' => 'nullable|string',
+
             'packaging' => 'nullable|string',
             'storage_requirements' => 'nullable|string',
             'preparation_instructions' => 'nullable|string',
             'certifications' => 'nullable|string',
-            'meal_pattern_contributions' => 'nullable|array',
-            'cn_statements' => 'nullable|array',
+
+            'meal_pattern_contributions' => 'nullable|string',
+            'cn_statements' => 'nullable|string',
+
+            // FILE VALIDATION
+            'product_specification_sheet' => 'nullable|file',
+            'product_formulation_statement' => 'nullable|file',
+            // 'buy_american_complaince' => 'nullable|file',
         ]);
 
         $user = Auth::user();
-        $districtId = $user->hasRole('admin') ? $request->district_id : $product->district_id;
+
+        $districtId = $user->hasRole('admin')
+            ? $request->district_id
+            : $product->district_id;
+
+           
+        // FILE UPLOAD LOGIC
+
+        $specSheet = $product->product_specification_sheet;
+        if ($request->hasFile('product_specification_sheet')) {
+
+            // delete old file
+            if ($product->product_specification_sheet && Storage::disk('public')->exists($product->product_specification_sheet)) {
+                Storage::disk('public')->delete($product->product_specification_sheet);
+            }
+
+            // upload new file
+            $specSheet = $request->file('product_specification_sheet')
+                ->store('products/documents', 'public');
+        }
+
+
+        $formulation = $product->product_formulation_statement;
+        if ($request->hasFile('product_formulation_statement')) {
+
+            if ($product->product_formulation_statement && Storage::disk('public')->exists($product->product_formulation_statement)) {
+                Storage::disk('public')->delete($product->product_formulation_statement);
+            }
+
+            $formulation = $request->file('product_formulation_statement')
+                ->store('products/documents', 'public');
+        }
+
+
+        $compliance = $product->buy_american_complaince;
+        if ($request->hasFile('buy_american_complaince')) {
+
+            if ($product->buy_american_complaince && Storage::disk('public')->exists($product->buy_american_complaince)) {
+                Storage::disk('public')->delete($product->buy_american_complaince);
+            }
+
+            $compliance = $request->file('buy_american_complaince')
+                ->store('products/documents', 'public');
+        }
+
+       // DELETE FILES LOGIC
+        if($request->delete_files)
+        {
+            foreach($request->delete_files as $field)
+            {
+                if($product->$field && Storage::disk('public')->exists($product->$field))
+                {
+                    Storage::disk('public')->delete($product->$field);
+                }
+
+                if($field == 'product_specification_sheet'){
+                    $specSheet = null;
+                }
+
+                if($field == 'product_formulation_statement'){
+                    $formulation = null;
+                }
+
+                if($field == 'buy_american_complaince'){
+                    $compliance = null;
+                }
+            }
+        }
+
+        // UPDATE PRODUCT
 
         $product->update([
-            'district_id' => $districtId,
-            'name' => $request->name,
-            'brand' => $request->brand,
-            'category' => $request->category,
-            'product_code' => $request->product_code,
-            'description' => $request->description,
-            'ingredients' => $request->ingredients,
-            'allergens' => $request->allergens,
-            'nutritional_info' => $request->nutritional_info,
-            'packaging' => $request->packaging,
-            'storage_requirements' => $request->storage_requirements,
-            'preparation_instructions' => $request->preparation_instructions,
-            'certifications' => $request->certifications,
-            'meal_pattern_contributions' => $request->meal_pattern_contributions,
-            'cn_statements' => $request->cn_statements,
-        ]);
 
-        return redirect()->route('products.show', $product->id)->with('success', 'Product updated successfully.');
+            'district_id' => $districtId,
+
+           'name' => $request->name,
+        'nutri_code' => $request->nutri_code,
+        'manufacturer' => $request->manufacturer,
+        'product_number' => $request->product_number,
+
+        'unit_size' => $request->unit_size,
+        'serving_size' => $request->serving_size,
+        'case_pack' => $request->case_pack,
+        'shift_life' => $request->shift_life,
+
+        'calories' => $request->calories,
+        'protein' => $request->protein,
+        'carbs' => $request->carbs,
+        'fat' => $request->fat,
+        'sat_fat' => $request->sat_fat,
+        'trans_fat' => $request->trans_fat,
+
+        'brand' => $request->brand,
+        'category' => $request->category,
+        'product_code' => $request->product_code,
+
+        'description' => $request->description,
+        'ingredients' => $request->ingredients,
+        'allergens' => $request->allergens,
+
+        'nutritional_info' => $request->nutritional_info,
+
+        'packaging' => $request->packaging,
+        'storage_requirements' => $request->storage_requirements,
+        'preparation_instructions' => $request->preparation_instructions,
+        'certifications' => $request->certifications,
+
+        'meal_pattern_contributions' => $request->meal_pattern_contributions,
+        'cn_statements' => $request->cn_statements,
+
+        // FILE PATH
+        'product_specification_sheet' => $specSheet,
+        'product_formulation_statement' => $formulation,
+        'buy_american_complaince' => $compliance,
+
+        'status' => $request->status,
+        ]);
+        
+
+        return redirect()
+            ->route('admin.products.index', $product->id)
+            ->with('success', 'Product updated successfully.');
     }
 
     /**
@@ -165,11 +339,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $this->authorize('delete', $product);
+        // $this->authorize('delete', $product);
         
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
     }
 
     /**
