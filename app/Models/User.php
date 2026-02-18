@@ -48,4 +48,8 @@ class User extends Authenticatable
             'terms_accepted_at' => 'datetime',
         ];
     }
+
+    public function user_detail(){
+        return $this->hasOne(UserDetail::class, 'user_id');
+    }
 }

@@ -22,7 +22,7 @@ class SuperAdminSeeder extends Seeder
         $superAdmin = User::create([
             'name' => 'Super Admin',
             'email' => 'superadmin@example.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('123456'),
         ]);
         
         // Assign admin role to the super admin
@@ -30,6 +30,6 @@ class SuperAdminSeeder extends Seeder
         
         echo "Super Admin created successfully!\n";
         echo "Email: superadmin@example.com\n";
-        echo "Password: password\n";
+        echo "Password: 123456\n";
     }
 }

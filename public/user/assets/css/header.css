@@ -1,0 +1,121 @@
+/* ================= NAVBAR ================= */
+header .navbar {
+  background: #09090b;
+  padding: 16px 0;
+}
+header .navbar .nav{
+    background: #09090b;
+}
+
+header .nav-link {
+  color: #cfcfcf !important;
+  margin: 0 12px;
+  font-size: 16px;
+  font-weight: 400;
+  transition: all ease-in-out .3s;
+}
+
+header .nav-link:hover {
+  color: #EA580C !important;
+}
+
+.btn-outline-light {
+  border-radius: 10px;
+  padding: 8px 20px;
+  /* border: 1px solid #666666; */
+  border: 0;
+  transition: all ease-in-out 0.3s;
+  display: inline-flex;
+  white-space: nowrap;
+}
+.btn-outline-light:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+.btn-primary-custom {
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  padding: 8px 20px;
+  font-weight: 700;
+  border: 1px solid #666666;
+  color: #ffffff;
+  transition: all ease-in-out 0.3s;
+  display: inline-flex;
+  white-space: nowrap;
+  align-items: center;
+    gap: 5px;
+}
+
+.btn-primary-custom:hover {
+  background: #ea580c;
+  color: #ffffff;
+}
+.logo {
+  max-width: 200px;
+  width: 100%;
+}
+
+/* ================= STICKY NAVBAR ================= */
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  transition: all 0.35s ease;
+}
+
+/* default transparent */
+header .navbar {
+  /* background: transparent; */
+  transition: all 0.35s ease;
+}
+
+/* when scrolling */
+header.sticky {
+  background: #09090B;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+
+/* optional: slightly shrink navbar */
+header.sticky .navbar {
+  padding: 4px 0;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .45);
+}
+
+
+@media screen and (max-width: 1199px) {
+  .logo {
+    max-width: 150px;
+}
+header .nav-link {
+    margin: 0 8px;
+    font-size: 14px;
+}
+.btn-primary-custom {
+    font-size: 12px;
+    padding: 6px 14px;
+}
+.btn-outline-light {
+    padding: 6px 14px;
+    font-size: 12px;
+}
+}
+@media screen and (max-width: 768px) {
+header .nav-link {
+    font-size: 12px;
+}
+.logo {
+    max-width: 120px;
+}
+header .navbar {
+    padding: 10px 0;
+}
+header .navbar-brand {
+    padding: 0;
+}
+}

@@ -24,6 +24,17 @@
                 </a>
 
             </li>
+            <li class="sidebar-item {{ request()->is('dashboard') ? 'active' : '' }}">
+
+                <a href="{{ route('user.list') }}" class="sidebar-link">
+
+                    <i data-feather="home" width="20"></i>
+
+                    <span>User</span>
+
+                </a>
+
+            </li>
             <li class="sidebar-item {{ request()->is('analytics*') ? 'active' : '' }}">
                 <a href="{{ url('/analytics') }}" class="sidebar-link">
                     <i data-feather="bar-chart-2" width="20"></i>

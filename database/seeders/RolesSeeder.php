@@ -12,6 +12,7 @@ class RolesSeeder extends Seeder
     {
         Role::firstOrCreate(['name' => 'admin']);
         Role::firstOrCreate(['name' => 'district']);
+        Role::create(['name' => 'user']);
 
         // Assign admin role to the first user if exists
         $user = User::first();
