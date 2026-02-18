@@ -35,7 +35,7 @@
                     @endif
 
                     <!-- Login Form -->
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login.process') }}">
                         @csrf
 
                         <!-- Email -->
@@ -45,9 +45,8 @@
                             <div class="position-relative">
                                 <input type="email"
                                        name="email"
-                                       class="form-control"
-                                       value="{{ old('email') }}"
-                                       required autofocus>
+                                       class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                       value="{{ old('email') }}" autofocus>
 
                                 <div class="form-control-icon">
                                     <i data-feather="user"></i>
@@ -55,7 +54,7 @@
                             </div>
 
                             @error('email')
-                                <small class="text-danger">{{ $message }}</small>
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -77,8 +76,8 @@
                             <div class="position-relative">
                                 <input type="password"
                                        name="password"
-                                       class="form-control"
-                                       required>
+                                       class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                                       value="{{ old('password') }}">
 
                                 <div class="form-control-icon">
                                     <i data-feather="lock"></i>
@@ -86,14 +85,14 @@
                             </div>
 
                             @error('password')
-                                <small class="text-danger">{{ $message }}</small>
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
 
                         </div>
 
 
                         <!-- Remember me -->
-                        <div class="form-check clearfix my-4">
+                        {{-- <div class="form-check clearfix my-4">
 
                             <div class="checkbox float-start">
                                 <input type="checkbox"
@@ -104,12 +103,12 @@
                             </div>
 
                             <div class="float-end">
-                                <a href="{{ route('register') }}">
+                                <a href="{{ route('custom.register') }}">
                                     Don't have an account?
                                 </a>
                             </div>
 
-                        </div>
+                        </div> --}}
 
 
                         <!-- Submit -->
