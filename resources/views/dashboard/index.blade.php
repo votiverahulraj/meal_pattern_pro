@@ -1,189 +1,130 @@
+
+
 @extends('layouts.app')
 
 @section('title', 'Dashboard')
-
-@section('styles')
-<link rel="stylesheet" href="{{ asset('assets/vendors/chartjs/Chart.min.css') }}">
-@endsection
 
 @section('content')
 
 <div class="main-content container-fluid">
 
-    <div class="page-title">
-        <h3>Dashboard</h3>
+    {{-- Title --}}
+    <div class="page-title mb-4">
+        <h3>My Dashboard</h3>
         <p class="text-subtitle text-muted">
-            A good dashboard to display your statistics
+            Manage your school's nutrition program
         </p>
     </div>
 
-    <section class="section">
 
-        <div class="row mb-2">
+    {{-- Cards Row --}}
+    <div class="row mb-3">
 
-            {{-- Balance --}}
-            <div class="col-12 col-md-3">
-                <div class="card card-statistic">
-                    <div class="card-body p-0">
+        {{-- My Products --}}
+        <div class="col-md-4">
+            <div class="card card-statistic">
 
-                        <div class="d-flex flex-column">
+                <div class="card-body d-flex justify-content-between align-items-center">
 
-                            <div class="px-3 py-3 d-flex justify-content-between">
-
-                                <h3 class="card-title">BALANCE</h3>
-
-                                <div>$50</div>
-
-                            </div>
-
-                            <div class="chart-wrapper">
-                                <canvas id="canvas1" style="height:100px"></canvas>
-                            </div>
-
-                        </div>
-
+                    <div>
+                        <div class="text-muted">My Products</div>
+                        <h3 class="mb-0">0</h3>
                     </div>
-                </div>
-            </div>
 
-            {{-- Revenue --}}
-            <div class="col-12 col-md-3">
-                <div class="card card-statistic">
-
-                    <div class="card-body p-0">
-
-                        <div class="d-flex flex-column">
-
-                            <div class="px-3 py-3 d-flex justify-content-between">
-
-                                <h3 class="card-title">Revenue</h3>
-
-                                <div>$532,2</div>
-
-                            </div>
-
-                            <div class="chart-wrapper">
-                                <canvas id="canvas2" style="height:100px"></canvas>
-                            </div>
-
-                        </div>
-
+                    <div>
+                        <i class="bi bi-box fs-2"></i>
                     </div>
 
                 </div>
+
             </div>
-
-            {{-- Orders --}}
-            <div class="col-12 col-md-3">
-                <div class="card card-statistic">
-
-                    <div class="card-body p-0">
-
-                        <div class="d-flex flex-column">
-
-                            <div class="px-3 py-3 d-flex justify-content-between">
-
-                                <h3 class="card-title">ORDERS</h3>
-
-                                <div>1,544</div>
-
-                            </div>
-
-                            <div class="chart-wrapper">
-                                <canvas id="canvas3"></canvas>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
-            {{-- Sales --}}
-            <div class="col-12 col-md-3">
-                <div class="card card-statistic">
-
-                    <div class="card-body p-0">
-
-                        <div class="d-flex flex-column">
-
-                            <div class="px-3 py-3 d-flex justify-content-between">
-
-                                <h3 class="card-title">Sales Today</h3>
-
-                                <div>423</div>
-
-                            </div>
-
-                            <div class="chart-wrapper">
-                                <canvas id="canvas4"></canvas>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
         </div>
 
 
-        {{-- Table --}}
-        <div class="card">
+        {{-- Documents --}}
+        <div class="col-md-4">
+            <div class="card card-statistic">
 
-            <div class="card-header">
-                <h4>Orders Today</h4>
-            </div>
+                <div class="card-body d-flex justify-content-between align-items-center">
 
-            <div class="card-body">
+                    <div>
+                        <div class="text-muted">Documents Available</div>
+                        <h3 class="mb-0">0</h3>
+                    </div>
 
-                <table class="table">
+                    <div>
+                        <i class="bi bi-file-earmark fs-2"></i>
+                    </div>
 
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>City</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        <tr>
-                            <td>Kuldeep</td>
-                            <td>kuldeep@gmail.com</td>
-                            <td>Delhi</td>
-                            <td>
-                                <span class="badge bg-success">
-                                    Active
-                                </span>
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
+                </div>
 
             </div>
-
         </div>
 
 
-    </section>
+        {{-- Subscription --}}
+        <div class="col-md-4">
+            <div class="card card-statistic">
+
+                <div class="card-body d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <div class="text-muted">Subscription</div>
+                        <h4 class="mb-0">Inactive</h4>
+                    </div>
+
+                    <div>
+                        <i class="bi bi-calendar fs-2"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    {{-- Subscription message --}}
+    <div>
+
+        <div class="card-body text-center">
+
+            <h5>No Active Subscription</h5>
+
+            <p class="text-muted">
+                Subscribe to access CN Labels, compliance reports, and product reviews
+            </p>
+
+            <button class="btn btn-primary">
+                View Plans - Starting at $99/month
+            </button>
+
+        </div>
+
+    </div>
+
+
+    {{-- My Products --}}
+    <div>
+
+        <div class="card-body d-flex justify-content-between align-items-center">
+
+            <div>
+                <h5>My Products</h5>
+                <div class="text-muted">0 Products in your profile</div>
+            </div>
+
+            <a href="{{ route('admin.products.index') }}"
+               class="btn btn-primary">
+                View Products
+            </a>
+
+        </div>
+
+    </div>
+
 
 </div>
 
-@endsection
-
-
-@section('js')
-
-<script src="{{ asset('assets/vendors/chartjs/Chart.min.js') }}"></script>
-
-<script src="{{ asset('assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
-
-<script src="{{ asset('assets/js/pages/dashboard.js') }}"></script>
 @endsection

@@ -27,7 +27,7 @@ class SuperAdminSeeder extends Seeder
         
         // Assign admin role to the super admin
         $superAdmin->assignRole('admin');
-        
+            
         echo "Super Admin created successfully!\n";
         echo "Email: superadmin@example.com\n";
         echo "Password: 123456\n";
