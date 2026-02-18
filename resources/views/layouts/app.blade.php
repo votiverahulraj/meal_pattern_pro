@@ -83,60 +83,58 @@
         </button>
     </li> --}}
 
-                    {{-- User --}}
-                   <li class="dropdown">
+     {{-- User --}}
+        <li class="nav-item dropdown">
 
-                        <a href="#" data-bs-toggle="dropdown"
-                        class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+            <a href="#"
+            class="nav-link dropdown-toggle nav-link-lg nav-link-user"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
 
-                            <div class="avatar me-1">
-                                <img src="{{ asset('assets/images/avatar/avatar-s-1.png') }}" alt="">
-                            </div>
+                <div class="avatar me-1">
+                    <img src="{{ asset('assets/images/avatar/avatar-s-1.png') }}" alt="">
+                </div>
 
-                            <div class="d-none d-md-block d-lg-inline-block">
-                                Hi, {{ auth()->user()->name }}
-                            </div>
+                <div class="d-none d-md-block d-lg-inline-block">
+                    Hi, {{ auth()->user()->name }}
+                </div>
 
-                        </a>
+            </a>
 
-                        {{-- Dropdown Menu --}}
-                        <div class="dropdown-menu dropdown-menu-end">
+            {{-- Dropdown Menu --}}
+            <ul class="dropdown-menu dropdown-menu-end">
 
-                            <a class="dropdown-item" href="#">
-                                <i data-feather="user"></i> Account
-                            </a>
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <i data-feather="user"></i> Account
+                    </a>
+                </li>
 
-                            <a class="dropdown-item active" href="#">
-                                <i data-feather="mail"></i> Messages
-                            </a>
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <i data-feather="mail"></i> Messages
+                    </a>
+                </li>
 
-                            <a class="dropdown-item" href="#">
-                                <i data-feather="settings"></i> Settings
-                            </a>
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <i data-feather="settings"></i> Settings
+                    </a>
+                </li>
 
-                            <div class="dropdown-divider"></div>
+                <li><hr class="dropdown-divider"></li>
 
-                            <a class="dropdown-item"
-                                href="{{ route('logout') }}"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <li>
+                    <a class="dropdown-item"
+                    href="{{ route('logout') }}"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i data-feather="log-out"></i> Logout
+                    </a>
+                </li>
 
-                                    <i data-feather="log-out"></i> Logout
-                                </a>
+            </ul>
 
-                                <!-- Hidden Logout Form -->
-                                <form id="logout-form"
-                                    action="{{ route('logout') }}"
-                                    method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                </form>
-
-                        </div>
-
-                    </li>
-
-
-</li>
+        </li>
 
                 </ul>
 
