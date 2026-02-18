@@ -8,6 +8,10 @@ use App\Models\District;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Imports\ProductsImport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProductsExport;
+
 
 class ProductController extends Controller
 {
@@ -410,4 +414,22 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', 'File uploaded successfully.');
     }
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv,xls'
+        ]);
+
+        Excel::import(new ProductsImport, $request->file('file'));
+
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success', 'Products Imported Successfully');
+    }
+    
+    public function export()
+    {
+        return Excel::download(new ProductsExport, 'products_template.xlsx');
+    }
+    
 }
